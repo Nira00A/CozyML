@@ -1,15 +1,36 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import GlobalLayout from './layout';
+import DashboardScreen from './screens/Home';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
+function AppRoutes() {
+  const router = useMemo(()=>{
+    return createBrowserRouter([
+      {
+        path: "/",
+        element: <GlobalLayout />,
+        children: [
+          {
+            index: true,
+            element: <DashboardScreen />,
+          },
+        ],
+      },
+    ]);
+  }, []);
+
+  return <RouterProvider router={router} />;
+}
+
 root.render(
-  <React.StrictMode>fafafa
-    <App />
+  <React.StrictMode>
+    <AppRoutes />
   </React.StrictMode>
 );
 
