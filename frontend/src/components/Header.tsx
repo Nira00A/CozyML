@@ -15,7 +15,7 @@ export default function Header() {
   return (
     <div className="bg-background text-2xl">
       <div className="flex flex-row justify-between">
-        <div className="flex flex-row items-center gap-4 p-4">
+        <div className="flex flex-row items-center gap-4 p-3">
           <span className="font-bold mr-10 text-primary text-2xl">CozyML</span>
 
           {[{"name": "dashboard", "to": "/"}, {"name": "insights", "to": "/insights"}, {"name": "history", "to": "/history"}].map((item) => (
@@ -23,7 +23,7 @@ export default function Header() {
               key={item.name}
               onClick={() => setActiveTab(item.name)}
               to={item.to}
-              className={`relative pb-1 group text-base font-semibold transition-colors duration-300
+              className={`relative pb-1 group text-sm font-semibold transition-colors duration-300
                 ${activeTab === item.name 
                   ? "text-primary"   
                   : "text-text hover:text-primary" 
@@ -37,7 +37,7 @@ export default function Header() {
             </Link>
           ))}
         </div>
-        <div className="flex flex-row items-center gap-4 p-4">
+        <div className="flex flex-row items-center gap-4 p-3">
           <button className="bg-primary text-background hover:bg-primary/90 text-base font-semibold px-2 rounded-full transition-colors duration-300">
             ?
           </button>
