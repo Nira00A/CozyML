@@ -118,12 +118,13 @@ export const AnnModelDTOSchema = z.object({
     .nullable()
     .optional()
     .default([32, 64, 128]),
-  activation: z.enum(['relu', 'tanh']).nullable().optional().default('relu'),
-  solver: z
-    .enum(['adam', 'sgd', 'lbfgs'])
+  activation: z.enum(['relu', 'tanh']).optional().default('relu'),
+  optimizer: z
+    .enum(['adam', 'sgd', 'rmsprop'])
     .nullable()
     .optional()
     .default('adam'),
+  metrics: z.array(z.string()).nullable().optional().default(['accuracy']),
 });
 
 export type AnnModelDTO = z.infer<typeof AnnModelDTOSchema>;
@@ -131,13 +132,13 @@ export type AnnModelDTO = z.infer<typeof AnnModelDTOSchema>;
 export const CnnModelDTOSchema = z.object({
   model_name: z.literal('cnn'),
   model_type: z.enum(['classification', 'regression']),
-  num_filters: z
+  hidden_layer_sizes: z
     .array(z.number().int())
     .nullable()
     .optional()
     .default([32, 64]),
-  kernel_size: z.number().int().nullable().optional().default(3),
-  activation: z.enum(['relu', 'tanh']).nullable().optional().default('relu'),
+  kernel_size: z.number().int().optional().default(3),
+  activation: z.enum(['relu', 'tanh']).optional().default('relu'),
   optimizer: z
     .enum(['adam', 'sgd', 'rmsprop'])
     .nullable()
@@ -165,7 +166,7 @@ export const PipelinePayloadDTOSchema = z.object({
   job_name: z.string(),
   dataset_url: z.string(),
   data_processing: DataProcessingDTOSchema,
-  model_config: ModelConfigSchema, // type: ignore
+  ml_model: ModelConfigSchema, // type: ignore
 });
 
 export type PipelinePayloadDTO = z.infer<typeof PipelinePayloadDTOSchema>;
