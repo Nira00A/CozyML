@@ -1,4 +1,4 @@
-from fastapi import FastAPI, UploadFile, File
+from fastapi import FastAPI, Form, UploadFile, File
 import pandas as pd
 import io
 
@@ -13,7 +13,19 @@ async def upload_file(file: UploadFile = File(...)):
     contents = await file.read()
     df = pd.read_csv(io.BytesIO(contents))
     # Process the DataFrame as needed
-    return {"filename": file.filename, "columns": df.columns.tolist()}
+    return {"filedata": df.head(5).to_dict(orient="records"), "columns": df.columns.tolist()}
+
+@app.post("/preprocess")
+async def data_processing(
+    file: UploadFile = File(...),
+    payload: str = Form(...)
+    ):
+    contents = await file.read()
+    df = pd.read_csv(io.BytesIO(contents))
+    
+
+    return {"preprocessed_data": df.head(5).to_dict(orient="records")
+    }
 
 if __name__ == "__main__":
     print("Starting server...")
