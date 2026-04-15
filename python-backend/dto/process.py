@@ -36,7 +36,7 @@ class DataProcessingDTO(BaseModel):
 class KnnModelDTO(BaseModel):
     model_name: Literal['knn']
     model_type: Literal['classification', 'regression']
-    n_neighbors: Optional[int] = 5
+    n_neighbors: int = 5
     weights: Optional[Literal['uniform', 'distance']] = 'uniform'
 
 class DecisionTreeModelDTO(BaseModel):
@@ -44,7 +44,7 @@ class DecisionTreeModelDTO(BaseModel):
     model_type: Literal['classification', 'regression']
     criterion: Literal['gini', 'entropy', 'log_loss'] = "gini"
     max_depth: Optional[int] = None
-    min_samples_split: Optional[int] = 2
+    min_samples_split: int = 1
 
 class LinearRegressionModelDTO(BaseModel):
     model_name: Literal['linear_regression']
@@ -54,20 +54,21 @@ class LogisticRegressionModelDTO(BaseModel):
     model_name: Literal['logistic_regression']
     model_type: Literal['classification']
     penalty: Optional[Literal['l1', 'l2', 'elasticnet', 'none']] = 'l2'
-    C: Optional[float] = 1.0
+    C: float = 1.0
 
 class AnnModelDTO(BaseModel):
     model_name: Literal['ann']
     model_type: Literal['classification', 'regression']
-    hidden_layer_sizes: Optional[List[int]] = Field(default=[32 , 64 , 128])
+    hidden_layer_sizes: List[int] = Field(default=[32 , 64 , 128])
     activation: Optional[Literal['relu', 'tanh']] = 'relu'
-    solver: Optional[Literal['adam', 'sgd', 'lbfgs']] = 'adam'
+    optimizer: Optional[Literal['adam', 'sgd', 'rmsprop']] = 'adam'
+    metrics: Optional[List[str]] = Field(default=['accuracy'])
 
 class CnnModelDTO(BaseModel):
     model_name: Literal['cnn']
     model_type: Literal['classification', 'regression']
-    num_filters: Optional[List[int]] = Field(default=[32, 64])
-    kernel_size: Optional[int] = 3
+    hidden_layer_sizes: List[int] = Field(default=[32 , 64 , 128])
+    kernel_size: int = 3
     activation: Optional[Literal['relu', 'tanh']] = 'relu'
     optimizer: Optional[Literal['adam', 'sgd', 'rmsprop']] = 'adam'
     metrics: Optional[List[str]] = Field(default=['accuracy'])
@@ -81,4 +82,4 @@ class PipelinePayloadDTO(BaseModel):
     job_name: str
     dataset_url: str
     data_processing: DataProcessingDTO
-    model_config: ModelConfig # type: ignore
+    ml_model: ModelConfig # type: ignore
