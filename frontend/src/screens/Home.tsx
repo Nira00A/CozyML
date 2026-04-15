@@ -3,8 +3,20 @@ import TipCard, { DiagnosisCard } from '../components/cards'
 import StandardButton from '../components/buttons'
 import Dropdown from '../components/dropdown'
 import {ReactComponent as Graph} from '../assets/finance_mode.svg';
+import api from '../api/axios';
 
 export default function DashboardScreen() {
+  const handleFileUpload = (file: File) => {
+    // Implement the logic to upload the file to the backend
+    const formData = new FormData();
+    formData.append('file', file);
+    const response = api.post('/upload', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  };
+
   return (
     <div className="h-full overflow-auto bg-background p-3 md:p-8 font-sans">
         <div className="flex flex-col lg:flex-row gap-4">
