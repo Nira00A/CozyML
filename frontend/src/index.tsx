@@ -4,6 +4,7 @@ import reportWebVitals from './reportWebVitals';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import GlobalLayout from './layout';
 import DashboardScreen from './screens/Home';
+import Insights from './screens/Insights';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -20,6 +21,10 @@ function AppRoutes() {
             index: true,
             element: <DashboardScreen />,
           },
+          {
+            path: "/insights",
+            element: <Insights />,
+          }
         ],
       },
     ]);

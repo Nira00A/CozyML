@@ -6,16 +6,16 @@ import {ReactComponent as Graph} from '../assets/finance_mode.svg';
 import api from '../api/axios';
 
 export default function DashboardScreen() {
-  const handleFileUpload = (file: File) => {
-    // Implement the logic to upload the file to the backend
-    const formData = new FormData();
-    formData.append('file', file);
-    const response = api.post('/upload', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
-  };
+  // const handleFileUpload = (file: File) => {
+  //   // Implement the logic to upload the file to the backend
+  //   const formData = new FormData();
+  //   formData.append('file', file);
+  //   const response = api.post('/upload', formData, {
+  //     headers: {
+  //       'Content-Type': 'multipart/form-data',
+  //     },
+  //   });
+  // };
 
   return (
     <div className="h-full overflow-auto bg-background p-3 md:p-8 font-sans">
