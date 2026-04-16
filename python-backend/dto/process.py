@@ -83,3 +83,15 @@ class PipelinePayloadDTO(BaseModel):
     dataset_url: str
     data_processing: DataProcessingDTO
     ml_model: ModelConfig # type: ignore
+
+# DTO for AI response structuring
+
+class ModelMetricContext(BaseModel):
+    model_name: str
+    accuracy: float
+    f1_score: float
+    precision: float
+    recall: float
+    latency_ms: float
+    confusion_matrix_str: str 
+    feature_importance_str: str
