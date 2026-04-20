@@ -14,7 +14,7 @@ class DataProcessingDTO(BaseModel):
     date_feature_strategy: Optional[Literal['date_month' , 'date_year', 'timestamp', 'drop']] = None
 
     # Handle missing values
-    numberical_missing_strategy: Optional[Literal['mean', 'median', 'most_frequent', 'drop' , 'knn_imputer']] = 'mean'
+    numerical_missing_strategy: Optional[Literal['mean', 'median', 'most_frequent', 'drop' , 'knn_imputer']] = 'mean'
     categorical_missing_strategy: Optional[Literal['most_frequent', 'constant' , 'drop']] = 'drop'
 
     # Handling categorical variables
@@ -52,7 +52,7 @@ class LinearRegressionModelDTO(BaseModel):
 
 class LogisticRegressionModelDTO(BaseModel):
     model_name: Literal['logistic_regression']
-    model_type: Literal['classification']
+    model_type: Literal['classification', 'regression']
     penalty: Optional[Literal['l1', 'l2', 'elasticnet', 'none']] = 'l2'
     C: float = 1.0
 

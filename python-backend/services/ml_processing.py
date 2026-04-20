@@ -1,6 +1,6 @@
-from sklearn.tree import DecisionTreeClassifier
+from sklearn.tree import DecisionTreeClassifier , DecisionTreeRegressor
 from sklearn.linear_model import LinearRegression, LogisticRegression
-from sklearn.neighbors import KNeighborsClassifier
+from sklearn.neighbors import KNeighborsClassifier , KNeighborsRegressor
 from dto.process import ModelConfig
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Conv1D, MaxPooling1D , Flatten , Input
@@ -17,8 +17,8 @@ def build_model(config: ModelConfig , X_train: pd.DataFrame):
     if config.model_name == "knn":
         if config.model_type == "classification":
             model = KNeighborsClassifier(n_neighbors=config.n_neighbors, weights=config.weights)
-        # else:
-        #     model = KNeighborsRegressor(n_neighbors=config.n_neighbors, weights=config.weights)
+        else:
+            model = KNeighborsRegressor(n_neighbors=config.n_neighbors, weights=config.weights)
     
     ### Decision Tree model
     elif config.model_name == "decision_tree":
@@ -29,7 +29,8 @@ def build_model(config: ModelConfig , X_train: pd.DataFrame):
 
     ### Linear Regression model
     elif config.model_name == "linear_regression":
-        model = LinearRegression()
+        if config.model_type == "regression":
+            model = LinearRegression()
 
     ### Logistic Regression model
     elif config.model_name == "logistic_regression":
@@ -45,14 +46,15 @@ def build_model(config: ModelConfig , X_train: pd.DataFrame):
     ## ANN model
     elif config.model_name == "ann":
         layers = []
+        layers.append(Input(shape=(X_train.shape[1],)),)
+        layers.append(Flatten())
         for size in config.hidden_layer_sizes:
             layers.append(Dense(size, activation=config.activation))
         layers.append(Dense(1, activation='sigmoid' if config.model_type == "classification" else 'linear'))
         model = Sequential([
-            Input(shape=(X_train.shape[1],)),
             *layers,
         ])
-
+        print("ANN Model Built")
         model.compile(
             optimizer=config.optimizer, 
             loss='binary_crossentropy' if config.model_type == "classification" else 'mean_squared_error', 
@@ -71,12 +73,14 @@ def build_model(config: ModelConfig , X_train: pd.DataFrame):
         model = Sequential([
             *layers,
         ])
-
+        print("CNN Model Built")
         model.compile(
             optimizer=config.optimizer, 
             loss='binary_crossentropy' if config.model_type == "classification" else 'mean_squared_error', 
             metrics=config.metrics
         )
+
+        print("CNN Model Built and Compiled" , model.summary())
 
     else:
         raise ValueError("Unsupported model type")

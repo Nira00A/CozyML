@@ -18,17 +18,17 @@ def data_processing_pipeline(df: pd.DataFrame , config: DataProcessingDTO) -> tu
         numerical_cols = X_train.select_dtypes(include=['float64', 'int64']).columns
 
         if len(numerical_cols) > 0:
-            if config.numberical_missing_strategy == None:
+            if config.numerical_missing_strategy == None:
                 pass
-            elif config.numberical_missing_strategy == "drop":
+            elif config.numerical_missing_strategy == "drop":
                 X_train = X_train.drop(columns=numerical_cols)
                 X_test = X_test.drop(columns=numerical_cols)
-            elif config.numberical_missing_strategy == "knn_imputer":
+            elif config.numerical_missing_strategy == "knn_imputer":
                 imputer = KNNImputer()
                 X_train[numerical_cols] = imputer.fit_transform(X_train[numerical_cols])
                 X_test[numerical_cols] = imputer.transform(X_test[numerical_cols])
-            elif config.numberical_missing_strategy in ["mean", "median", "most_frequent"]:
-                imputer = SimpleImputer(strategy=config.numberical_missing_strategy)
+            elif config.numerical_missing_strategy in ["mean", "median", "most_frequent"]:
+                imputer = SimpleImputer(strategy=config.numerical_missing_strategy)
                 X_train[numerical_cols] = imputer.fit_transform(X_train[numerical_cols])
                 X_test[numerical_cols] = imputer.transform(X_test[numerical_cols])
     except Exception as e:
