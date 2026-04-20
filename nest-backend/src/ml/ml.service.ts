@@ -3,6 +3,8 @@ import { firstValueFrom } from 'rxjs/internal/firstValueFrom';
 import FormData from 'form-data';
 import { HttpService } from '@nestjs/axios';
 import { PipelinePayloadDTO } from './dto/payload.dto';
+import { HttpException, InternalServerErrorException } from '@nestjs/common';
+import { lastValueFrom } from 'rxjs';
 
 @Injectable()
 export class MlService {
@@ -19,7 +21,7 @@ export class MlService {
     formData.append('payload', JSON.stringify(payload));
 
     try {
-      const response = await firstValueFrom(
+      const response = await lastValueFrom(
         this.httpService.post(
           process.env.PYTHON_API_URL + '/preprocess',
           formData,
@@ -32,7 +34,16 @@ export class MlService {
       );
       return response.data;
     } catch (error: Error | any) {
-      throw new Error(`Python ML Backend Error: ${error.message}`);
+      if (error.response) {
+        const status = error.response.status;
+        const pythonErrorBody = error.response.data;
+
+        throw new HttpException(pythonErrorBody, status);
+      }
+
+      throw new InternalServerErrorException(
+        'An error occurred while processing the request.',
+      );
     }
   }
 }

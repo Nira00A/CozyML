@@ -17,7 +17,7 @@ export const DataProcessingDTOSchema = z.object({
     .default(null),
 
   // Handle missing values
-  numberical_missing_strategy: z
+  numerical_missing_strategy: z
     .enum(['mean', 'median', 'most_frequent', 'drop', 'knn_imputer'])
     .nullable()
     .optional()
